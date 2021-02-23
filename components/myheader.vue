@@ -36,9 +36,8 @@
         color="light-green"
       >
         <v-tab to="music" active-class="blackie">Music</v-tab>
-        <v-tab to="coaching-and-commission" active-class="blackie"
-          >Song-coaching & Commission</v-tab
-        >
+        <v-tab to="song-coaching" active-class="blackie">Song-coaching</v-tab>
+        <v-tab to="comission" active-class="blackie">Comission</v-tab>
         <v-tab to="news" active-class="blackie">News</v-tab>
         <v-tab to="bio" active-class="blackie">Bio</v-tab>
         <v-tab to="performances" active-class="blackie">Performances</v-tab>

@@ -46,6 +46,66 @@ const songs: Song[] = [
     You, you, you’re my utopia`
   },
   {
+    title: "Forever Mine",
+    file: "Forever Mine_Adam Howe_Mark Kline.mp3",
+    wordsmusic: "Adam Howe & Mark Kline",
+    lyrics: `I knew you before and after
+    Your endless smile and perfect laughter
+    Not a single day goes by
+    When I don’t joyfully cry
+    A beauty so divine
+    You are forever mine
+    
+    You are all my family
+    A son and a daughter
+    As far as the eye can see
+    A brother and a sister
+    My love for you is so divine
+    you are forever mine
+    
+    You gave me the shining light
+    You are my Hope
+    Every day and every night
+    I’ll always help you cope 
+    My daughter, so divine  
+    you are forever mine
+    
+    I knew you before and after
+    Your endless smile and perfect laughter
+    Not a single day goes by
+    When I don’t joyfully cry
+    A beauty so divine
+    You are forever mine
+     
+    You fought so hard before me
+    I’ll always fight for you
+    My act of holy chivalry
+    Our love forever true
+    My son, so divine  
+    You are forever mine   
+    
+    I knew you before and after
+    Your endless smile and perfect laughter
+    Not a single day goes by
+    When I don’t joyfully cry
+    A beauty so divine 
+    You are forever mine
+    
+    Like father, like son
+    A mother, a daughter
+    You all complete me
+    My brother and sister
+    You are beautiful, you’re so divine
+    You are forever mine
+    
+    I knew you before and after
+    Your endless smile and perfect laughter   
+    Not a single day goes by  
+    When I don’t joyfully cry   
+    A beauty so divine
+    You are forever mine`
+  },
+  {
     title: "Tornado",
     file: "Tornado_Full_Mark_Kline.mp3",
     wordsmusic: "Mark Kline",
@@ -84,7 +144,56 @@ const songs: Song[] = [
       Tornado
       Tornado, tornado,
       Tornado`
+  },
+  {
+    title: "Instrument",
+    file: "Instrument_Mark_Kline.mp3",
+    wordsmusic: "Mark Kline",
+    lyrics: `Your heart's on fire with some crazy higher calling
+    Yet meant-to-be don't mean your ship is set to sail
+    So many voices offer carefully assessed rejections
+    Well-wishing friends suggest your dreams go on the shelf
+    
+    Sometimes fighting currents lets you know which way to swim
+    The world's against you, so try and try again
+    
+    Just do your thing; use your gifts
+    Don't hold back; never quit
+    Well, it's not for you; it's all for Him,
+    You're an instrument; you’re an instrument,
+    You’re an instrument; an instrument
+    
+    It's kind of silly how we hold some people higher
+    For having more in talent, therefore more to give away
+    Small gifts can multiply when used in the right place and time
+    Either way, give everything
+    
+    Two pennies offered up will purchase more for you
+    Than millions stored and wasted for the treasures of the earth
+    
+    So do your thing; use your gifts
+    Don't hold back; never quit
+    Well, it's not for you; it's all for Him,
+    You're an instrument; you’re an instrument,
+    You’re an instrument; an instrument
+    
+    of love, joy, and peace
+    Hope for those in need
+    Kindness and goodness and faithfulness
+    You are an instrument of God
+    You are an instrument of God
+    You are an instrument of God
+    
+    Well it's not for you; it's all for Him,   
+    You're an instrument; you’re an instrument,
+    You’re an instrument; an instrument`
   }
 ];
 
+const template = {
+  title: "",
+  file: ".mp3",
+  wordsmusic: "Mark Kline",
+  lyrics: ``
+};
 export { Song, songs };

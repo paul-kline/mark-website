@@ -7,5 +7,9 @@ export default class Global {
   verticalTabs: string[] = [];
   verticalTabFunctions: any[] = [];
   setActiveTab: any;
+  songPlaying: boolean = false;
+  songPlayingTab: number = 0;
+  songPlayClicked: any; //this is a method to show volume icon by playing song.
   allowVisibilityChange: boolean = true;
+  songPauseClicked: any;
 }

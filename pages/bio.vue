@@ -8,13 +8,14 @@
         music from Eureka College, where he studied piano and voice.
       </p>
     </div>
+    <mform />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-
-@Component
+import mform from "~/components/mform.vue";
+@Component({ components: { mform } })
 export default class HelloDecorator extends Vue {}
 </script>
 <style>
