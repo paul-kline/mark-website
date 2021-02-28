@@ -1,12 +1,12 @@
 <template>
-  <div style="width:100vw; position:absolute; left:0;" class="">
-    <div class="flex ">
-      <div class="side" style="position:sticky; top:40; ">
+  <div class="mobile-zoomer" style="position: absolute; left: 0; width:100%; ">
+    <div class="flex black">
+      <div class="side black" style="position:sticky; top:40; left:0; ">
         <v-tabs
           vertical
           background-color="#121212"
           v-model="tab"
-          class="fixed-tabies ml-2"
+          class="ml-2 black"
           style=" height:100%; "
         >
           <v-tab
@@ -52,10 +52,7 @@
           </template>
         </v-tabs-items>
         <div style="height:25px; background: #121212"></div>
-        <div
-          v-show="global.bottomPlayerDisplayed"
-          style="height:50px; background: #121212"
-        ></div>
+        <div style="height:50px; background: #121212"></div>
       </div>
     </div>
   </div>
@@ -184,15 +181,25 @@ export default class Music extends Vue {
   display: flex;
   flex-direction: row;
 }
+.black {
+  background: #121212 !important;
+}
 .side {
   position: sticky !important;
   top: 6.5rem;
-  height: 87vh;
-  z-index: 2;
+  left: 0;
+
+  height: max-content;
+  z-index: 0;
   background: #121212;
 }
 
 .invisible-border {
   border: 1px solid transparent;
+}
+@media only screen and (max-device-width: 600px) {
+  .mobile-zoomer {
+    zoom: 0.9;
+  }
 }
 </style>

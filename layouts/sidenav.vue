@@ -61,12 +61,12 @@ export default class SideNavLayout extends Vue {
   tab: number = 0;
   mounted() {
     const me = this;
-    this.global.setActiveTab = (i: number) => (me.tab = i);
+    // this.global.setActiveTab = (i: number) => (me.tab = i);
     this.global.songPlayClicked = (i: number) => {
       console.log("executing global.songPlayClicked");
       me.global.songPlaying = true;
       me.global.songPlayingTab = i;
-      me.global.setActiveTab(i);
+      // me.global.setActiveTab(i);
       //set active tab, and add playing icon
     };
     this.global.songPauseClicked = (i: number) => {
@@ -80,12 +80,11 @@ export default class SideNavLayout extends Vue {
   tabClicked(f: any) {
     console.log("tabclicked", f);
     const me = this;
-    me.global.allowVisibilityChange = false;
+    // me.global.allowVisibilityChange = false;
     // console.log('setting allowVisibilityChange to false;')
     setTimeout(() => {
       // console.log('setting allowVisibilityChange to true;')
-
-      me.global.allowVisibilityChange = true;
+      // me.global.allowVisibilityChange = true;
     }, 500);
     f();
   }

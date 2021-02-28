@@ -57,11 +57,11 @@ export default class Music extends Vue {
   }
   //@ts-ignore
   visibilityChanged(isVisible, song, index) {
-    console.log("visibility changed!!!", isVisible, song, index);
-    if (isVisible && this.global.allowVisibilityChange) {
-      // console.log('visibility changed trigger. setting index', index)
-      this.global.setActiveTab(index);
-    }
+    // console.log("visibility changed!!!", isVisible, song, index);
+    // if (isVisible && this.global.allowVisibilityChange) {
+    //   // console.log('visibility changed trigger. setting index', index)
+    //   this.global.setActiveTab(index);
+    // }
   }
   playing(audio: HTMLAudioElement, song: Song, index: number) {
     if (this.currentlyPlaying) {
@@ -91,24 +91,24 @@ export default class Music extends Vue {
       x._title = x.title.toLowerCase().replaceAll(" ", "");
     });
     console.log("nms", nms);
-    this.global.verticalTabs = nms;
+    // this.global.verticalTabs = nms;
     const me = this;
 
     //set what to do when vertical tab gets clicked.
     //need to do it here to have access to elements.
-    this.global.verticalTabFunctions = nms.map(x => () => {
-      //@ts-ignore
-      me.$vuetify.goTo("#" + x.toLowerCase().replaceAll(" ", ""));
-      //   const elem = me.$refs[x.replaceAll(" ", "") + "whole"];
-      //   console.log("elem", elem);
-      //   //@ts-ignore
-      //   const div: HtmlDivElement = document.querySelector(
-      //     "#" + x.replaceAll(" ", "") + "whole"
-      //   );
+    // this.global.verticalTabFunctions = nms.map(x => () => {
+    //   //@ts-ignore
+    //   me.$vuetify.goTo("#" + x.toLowerCase().replaceAll(" ", ""));
+    //   //   const elem = me.$refs[x.replaceAll(" ", "") + "whole"];
+    //   //   console.log("elem", elem);
+    //   //   //@ts-ignore
+    //   //   const div: HtmlDivElement = document.querySelector(
+    //   //     "#" + x.replaceAll(" ", "") + "whole"
+    //   //   );
 
-      //   div.style.border = "1px solid yellow";
-      //   setTimeout(() => (div.style.border = ""), 1000);
-    });
+    //   //   div.style.border = "1px solid yellow";
+    //   //   setTimeout(() => (div.style.border = ""), 1000);
+    // });
 
     this.$forceUpdate(); //without this, nav to id clicks fail. idk idk.
   }
