@@ -18,7 +18,11 @@
     <v-footer app>
       <!-- <v-col> -->
       <MarkPlayer />
-      <div>PaulKlineLabs &copy; {{ new Date().getFullYear() }}</div>
+      <div>
+        <a target="_blank" href="https://www.pauliankline.com"
+          >PaulKlineLabs &copy; {{ new Date().getFullYear() }}</a
+        >
+      </div>
       <!-- </v-col> -->
     </v-footer>
   </span>
