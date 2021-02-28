@@ -9,14 +9,28 @@
       </p>
     </div>
     <mform />
+    <div
+      v-show="global.bottomPlayerDisplayed"
+      style="height:50px; background: #121212"
+    ></div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import mform from "~/components/mform.vue";
+import Global from "~/ts/global";
 @Component({ components: { mform } })
-export default class HelloDecorator extends Vue {}
+export default class HelloDecorator extends Vue {
+  global = Global.getInstance();
+  mounted() {
+    console.log("bio mounted");
+    console.log("globalplaying", this.global.nowPlayingSongHolder);
+  }
+  created() {
+    console.log("bio created");
+  }
+}
 </script>
 <style>
 .center {

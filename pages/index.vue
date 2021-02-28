@@ -6,7 +6,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class HelloDecorator extends Vue {
   mounted() {
-    this.$router.push("/music");
+    this.$router.replace("/music");
   }
 }
 </script>

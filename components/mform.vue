@@ -21,7 +21,7 @@
         method="post"
         id="mc-embedded-subscribe-form"
         name="mc-embedded-subscribe-form"
-        class="validate bordered px-3 mb-2"
+        class="validate bordered px-3 mb-2 ml-3 mr-5"
         target="_blank"
         novalidate
       >

@@ -1,34 +1,63 @@
 <template>
-  <div class="d-fdlex " style="width:80vw">
-    <v-tabs-items v-if="orderedSongs.length > 0">
-      <songc
-        v-observe-visibility="
-          (isVisible, song) => visibilityChanged(isVisible, song, 0)
-        "
-        :song="firstSong"
-        :index="0"
-        :key="firstSong.title"
-        class="mb-1"
-        :id="firstSong._title"
-        v-on:playing="playing"
-        v-on:paused="paused"
-      />
-      <mform />
-      <template v-for="(song, i) in restOfSongs">
-        <songc
-          v-observe-visibility="
-            (isVisible, song) => visibilityChanged(isVisible, song, i + 1)
-          "
-          :song="song"
-          :index="i + 1"
-          :key="song.title"
-          class="mb-1"
-          :id="song._title"
-          v-on:playing="playing"
-          v-on:paused="paused"
-        />
-      </template>
-    </v-tabs-items>
+  <div style="width:100vw; position:absolute; left:0;" class="">
+    <div class="flex ">
+      <div class="side" style="position:sticky; top:40; ">
+        <v-tabs
+          vertical
+          background-color="#121212"
+          v-model="tab"
+          class="fixed-tabies ml-2"
+          style=" height:100%; "
+        >
+          <v-tab
+            v-for="(song, i) in orderedSongs"
+            :key="i"
+            link
+            @click="tabClicked(i)"
+          >
+            {{ song.title }}
+            <v-icon
+              v-show="global.songPlaying && i == songPlayingTab"
+              dark
+              right
+            >
+              mdi-volume-medium
+            </v-icon>
+          </v-tab>
+        </v-tabs>
+      </div>
+      <div class="" style="width:100%; height:100%;">
+        <v-tabs-items v-if="orderedSongs.length > 0">
+          <songc
+            :song="firstSong"
+            :index="0"
+            :key="firstSong.title"
+            class="mb-1 asong"
+            :id="firstSong._title"
+            v-on:playing="playing"
+            v-on:paused="paused"
+          />
+          <mform class="" />
+          <template v-for="(song, i) in restOfSongs">
+            <songc
+              :song="song"
+              :index="i + 1"
+              :key="song.title"
+              class="mb-1 asong"
+              :id="song._title"
+              :ref="song._title"
+              v-on:playing="playing"
+              v-on:paused="paused"
+            />
+          </template>
+        </v-tabs-items>
+        <div style="height:25px; background: #121212"></div>
+        <div
+          v-show="global.bottomPlayerDisplayed"
+          style="height:50px; background: #121212"
+        ></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,12 +66,18 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import songc from "~/components/song.vue";
 import mform from "~/components/mform.vue";
 import { Song, songs } from "~/ts/songs.ts";
-import Global from "~/ts/global";
-@Component({ layout: "sidenav", components: { songc, mform } })
+import Global, { SongHolder } from "~/ts/global";
+@Component({ components: { songc, mform } })
 export default class Music extends Vue {
-  global = Global.getInstance();
   currentlyPlaying: HTMLAudioElement | null = null;
+  allowVisibilityChange: boolean = true;
+
+  songPlayingTab: number = 0;
+  global = Global.getInstance();
   songs: Song[] = songs;
+  tab: number = 0;
+  verticalTabFunctions: any[] = [];
+
   get orderedSongs() {
     return songs;
   }
@@ -52,22 +87,18 @@ export default class Music extends Vue {
   get restOfSongs() {
     return this.orderedSongs.slice(1);
   }
-  //@ts-ignore
-  visibilityChanged(isVisible, song, index) {
-    console.log("visibility changed!!!", isVisible, song, index);
-    if (isVisible && this.global.allowVisibilityChange) {
-      // console.log('visibility changed trigger. setting index', index)
-      this.global.setActiveTab(index);
-    }
-  }
+
   playing(audio: HTMLAudioElement, song: Song, index: number) {
+    this.global.songPlaying = true;
+    this.global.bottomPlayerDisplayed = true;
+    this.songPlayingTab = index;
     if (this.currentlyPlaying) {
       this.currentlyPlaying.pause();
       // this.currentlyPlaying = null;
       // this.global.songPauseClicked(index);
     }
     this.currentlyPlaying = audio;
-    this.global.songPlayClicked(index);
+    // this.global.songPlayClicked(index);
     console.log("event received with payload:", audio, song, index);
   }
   paused(audio: HTMLAudioElement, song: Song, index: number) {
@@ -76,11 +107,15 @@ export default class Music extends Vue {
       //otherwise this pause shouldn't remove icon on other playing song.
       console.log("music.vue paused event");
       this.currentlyPlaying = null;
-      this.global.songPauseClicked(index);
+      this.global.songPlaying = false;
+      // this.songPauseClicked(index);
     }
   }
 
   mounted() {
+    console.log("globalsongs", this.global.songHolders);
+    console.log("music mounted");
+
     //set the tabs to have the title of the songs.
     const nms: string[] = []; // this.orderedSongs.map(x => x.title);
     this.orderedSongs.forEach(x => {
@@ -88,34 +123,75 @@ export default class Music extends Vue {
       x._title = x.title.toLowerCase().replaceAll(" ", "");
     });
     console.log("nms", nms);
-    this.global.verticalTabs = nms;
+    // this.global.verticalTabs = nms;
     const me = this;
+    let options = {
+      rootMargin: "0px",
+      threshold: 0.2
+    };
+    let observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(e => {
+        const _title = e.target.id;
+        if (e.isIntersecting && this.allowVisibilityChange) {
+          let ii = 0;
+          for (let i = 0; i < this.orderedSongs.length; i++) {
+            const s = this.orderedSongs[i];
+            if (s._title == _title) {
+              ii = i;
+              break;
+            }
+          }
+          this.tab = ii;
+        }
+        console.log("e", e.target.id, e.isIntersecting);
+      });
+    }, options);
+    const els = document.querySelectorAll(".asong");
+    els.forEach(el => {
+      observer.observe(el);
+    });
 
     //set what to do when vertical tab gets clicked.
     //need to do it here to have access to elements.
-    this.global.verticalTabFunctions = nms.map(x => () => {
+    this.verticalTabFunctions = nms.map(x => () => {
       //@ts-ignore
       me.$vuetify.goTo("#" + x.toLowerCase().replaceAll(" ", ""));
-      //   const elem = me.$refs[x.replaceAll(" ", "") + "whole"];
-      //   console.log("elem", elem);
-      //   //@ts-ignore
-      //   const div: HtmlDivElement = document.querySelector(
-      //     "#" + x.replaceAll(" ", "") + "whole"
-      //   );
-
-      //   div.style.border = "1px solid yellow";
-      //   setTimeout(() => (div.style.border = ""), 1000);
     });
+    console.log("this.verticalTabFunctions", this.verticalTabFunctions);
+
     this.$forceUpdate(); //without this, nav to id clicks fail. idk idk.
+  }
+  tabClicked(i: number) {
+    {
+      console.log("tabclicked", i);
+      const me = this;
+      this.allowVisibilityChange = false;
+      // console.log('setting allowVisibilityChange to false;')
+      setTimeout(() => {
+        // console.log('setting allowVisibilityChange to true;')
+
+        this.allowVisibilityChange = true;
+      }, 500);
+      console.log("funct", JSON.stringify(this.verticalTabFunctions[i]));
+      this.verticalTabFunctions[i]();
+      // f();
+    }
   }
 }
 </script>
 <style>
-.fixed-tabies {
-  position: sticky;
-  top: 6rem;
-  z-index: 2;
+.flex {
+  display: flex;
+  flex-direction: row;
 }
+.side {
+  position: sticky !important;
+  top: 6.5rem;
+  height: 87vh;
+  z-index: 2;
+  background: #121212;
+}
+
 .invisible-border {
   border: 1px solid transparent;
 }

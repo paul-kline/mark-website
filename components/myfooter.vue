@@ -13,26 +13,34 @@
     >
       <v-icon>mdi-chevron-up</v-icon>
     </v-btn>
+
+    <!-- <v-footer app -->
     <v-footer app>
-      <span>PaulKlineLabs &copy; {{ new Date().getFullYear() }}</span>
+      <!-- <v-col> -->
+      <MarkPlayer />
+      <div>PaulKlineLabs &copy; {{ new Date().getFullYear() }}</div>
+      <!-- </v-col> -->
     </v-footer>
   </span>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-
-@Component
+import { Vue, Component, Prop } from "vue-property-decorator";
+import MarkPlayer from "~/components/MarkPlayer.vue";
+@Component({ components: { MarkPlayer } })
 export default class HelloDecorator extends Vue {
-  fab: boolean = false
+  fab: boolean = false;
   onScroll(e: any) {
-    if (typeof window === 'undefined') return
-    const top = window.pageYOffset || e.target.scrollTop || 0
-    this.fab = top > 20
+    if (typeof window === "undefined") return;
+    const top = window.pageYOffset || e.target.scrollTop || 0;
+    this.fab = top > 20;
   }
   toTop() {
     //@ts-ignore;
-    this.$vuetify.goTo(0)
+    this.$vuetify.goTo(0);
+  }
+  mounted() {
+    console.log("footer mounted");
   }
 }
 </script>

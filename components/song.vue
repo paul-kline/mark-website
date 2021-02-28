@@ -25,10 +25,26 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Song } from "~/ts/songs.ts";
+import Global, { SongHolder } from "~/ts/global";
 @Component
 export default class SongCComponent extends Vue {
   @Prop() song!: Song;
   @Prop() index!: number;
+  global = Global.getInstance();
+  songHolder: SongHolder | null = null;
+  mounted() {
+    const song = this.song;
+    this.songHolder = {
+      title: song.title,
+      artists:
+        song.wordsmusic instanceof Array
+          ? song.wordsmusic.join(", ")
+          : song.wordsmusic,
+      index: this.index,
+      audio: this.$refs["audios"] as any
+    };
+    this.global.songHolders.push(this.songHolder);
+  }
   get lyrics() {
     return this.song.lyrics.replaceAll("\n", "<br />");
   }
@@ -39,15 +55,44 @@ export default class SongCComponent extends Vue {
       return this.song.wordsmusic;
     }
   }
-  played() {
-    console.log(
-      "play audio event triggered. emitting playing: ",
-      this.song.title
-    );
+  played(x: any) {
+    // console.log(
+    //   "play audio event triggered. emitting playing: ",
+    //   this.song.title
+    // );
+    this.global.nowPlayingSongHolder = this.songHolder;
     this.$emit("playing", this.$refs["audios"], this.song, this.index);
   }
-  paused() {
-    console.log("pause audio event triggered. emitting paused ", this.song);
+  paused(x: any) {
+    console.error("pause path", x.path.length);
+    console.log(x);
+    console.log("sent from bottom player", this.global.sentFromBottomPlayer);
+    const hr = this.global.nowPlayingSongHolder;
+    if (
+      hr &&
+      hr.audio &&
+      Math.abs(hr.audio.currentTime - hr.audio.duration) < 0.001
+    ) {
+      console.log(
+        "I THINK THE END OF THE SONG IS HERE AND WILL NOW TRY TO PLAY THE NEXT ONE"
+      );
+      const len = this.global.songHolders.length;
+      const index = (hr.index + 1) % len;
+      const newsh = this.global.songHolders.find(x => x.index == index);
+      if (newsh) {
+        this.global.nowPlayingSongHolder = newsh;
+        if (newsh.audio) {
+          newsh.audio.play();
+        }
+      }
+    } else if (x.path.length < 10 && !this.global.sentFromBottomPlayer) {
+      console.log("playing anyway!!!!");
+      //@ts-ignore
+      this.$refs["audios"].play();
+    }
+
+    // console.log("paused event in song sourceElementis ", x);
+    // console.log("pause audio event triggered. emitting paused ", this.song);
     this.$emit("paused", this.$refs["audios"], this.song, this.index);
   }
 }
